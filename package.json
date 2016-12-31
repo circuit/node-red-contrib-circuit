@@ -1,0 +1,14 @@
+{
+	"author": {
+		"name": "Sven, mailsvb@gmail.com"
+	},
+	"description": "node-red circuit extension",
+	"name": "node-red-contrib-circuit",
+	"keywords": [ "node-red", "circuit", "yourcircuit", "unify" ],
+	"node-red": {
+		"nodes": {
+			"circuit": "circuit/circuit.js"
+		}
+	},
+	"version": "1.5.0"
+}

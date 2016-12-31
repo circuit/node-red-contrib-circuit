@@ -1,0 +1,220 @@
+<script type="text/x-red" data-template-name="circuit-server">
+    <div class="form-row">
+        <label for="node-config-input-domain"><i class="icon-bookmark"></i> Domain</label>
+        <input type="text" id="node-config-input-domain">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-clientid"><i class="icon-bookmark"></i> Client ID</label>
+        <input type="text" id="node-config-input-clientid">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-clientsecret"><i class="icon-bookmark"></i> Client Secret</label>
+        <input type="password" id="node-config-input-clientsecret">
+    </div>
+    <div class="form-row">
+        <label><input type="checkbox" id="node-config-input-allowFirstname" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Firstname</label>
+        <input type="text" id="node-config-input-firstname">
+    </div>
+    <div class="form-row">
+        <label><input type="checkbox" id="node-config-input-allowLastname" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Lastname</label>
+        <input type="text" id="node-config-input-lastname">
+    </div>
+    <div class="form-row">
+        <label><input type="checkbox" id="node-config-input-allowStatusMsg" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Status msg</label>
+        <input type="text" id="node-config-input-statusMsg">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('circuit-server',{
+        category: 'config',
+        defaults: {
+            domain: {value:"circuitsandbox.net", required:true},
+            clientid: {value:"", required:true},
+            clientsecret: {value:"", required:true},
+            allowFirstname: {value:true},
+            firstname: {value:"", required:false},
+            allowLastname: {value:true},
+            lastname: {value:"", required:false},
+            allowStatusMsg: {value:false},
+            statusMsg: {value:"", required:false},
+        },
+        label: function() {
+            return this.clientid.substring(0, 8) + "...@" + this.domain;
+        }
+    });
+</script>
+
+<!-- addTextItem --> 
+
+<script type="text/x-red" data-template-name="addTextItem">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-conv"><i class="fa fa-plus-square"></i> Conv ID</label>
+        <input type="text" id="node-input-conv" placeholder="abcd1234-e567-f890-a123-abcdef123456">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="addTextItem">
+    <p>Send a new text message via the Circuit API</p>
+    <p>This node takes msg.payload as string or object. If a string is delivered, a simple text message is created. An object can have the following attributes
+    <ul>
+        <li><code>subject</code> The message subject</li>
+        <li><code>content</code> The message content</li>
+        <li><code>parentId</code> The ID of an existing message item to put this message as a comment</li>
+        <li><code>attachments</code> An Array of HTML5 File objects as attachment.</li>
+    </ul>
+    You can check details about addTextItem on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_addTextItem" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+    <p>The output will be available as object within msg.payload</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('addTextItem',{
+        category: 'Circuit',
+        defaults: {
+            server: {value:"", type:"circuit-server"},
+            conv: {value:""},
+            name: {value:"",required:false},
+        },
+        color: "#88C540",
+        inputs:1,
+        outputs:1,
+        icon: "circuit.png",
+        label: function() {
+            return this.name||this.conv||"addTextItem";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
+
+<!-- incoming circuit events --> 
+
+<script type="text/x-red" data-template-name="Events">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server" style="width: 70%;">
+    </div>
+    <div class="form-row">
+        <label>Subscribe?</label>
+        <input type="checkbox" id="node-input-callEvent" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-callEvent" style="width: 70%;"> Call events</label>
+    </div>
+    <div class="form-row">
+        <label>Subscribe?</label>
+        <input type="checkbox" id="node-input-convEvent" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-convEvent" style="width: 70%;"> Conversation events</label>
+    </div>
+    <div class="form-row">
+        <label>Subscribe?</label>
+        <input type="checkbox" id="node-input-itemEvent" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-itemEvent" style="width: 70%;"> Item events</label>
+    </div>
+    <div class="form-row">
+        <label>Subscribe?</label>
+        <input type="checkbox" id="node-input-userEvent" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-userEvent" style="width: 70%;"> User events</label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name" style="width: 70%;">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="Events">
+    <p>Subscribe to different generic events via the Circuit API</p>
+    <p>The following Events are available
+    <ul>
+        <li><code>Call Events</code> callStatus, callIncoming, callEnding</li>
+        <li><code>Conversation Events</code> conversationUpdated, conversationCreated</li>
+        <li><code>Item Events</code> itemUpdated, itemAdded</li>
+        <li><code>User Events</code> userSettingsChanged, userUpdated</li>
+    </ul>
+    You can check details about events on <a href="https://circuitsandbox.net/sdk/classes/Client.html#events" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+    <p>The output will be available as object within msg.payload</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('Events',{
+        category: 'Circuit',
+        defaults: {
+            server: {value:"", type:"circuit-server"},
+            callEvent: {value:true},
+            convEvent: {value:true},
+            itemEvent: {value:true},
+            userEvent: {value:true},
+            name: {value:"",required:false},
+        },
+        color: "#88C540",
+        inputs:0,
+        outputs:1,
+        icon: "circuit.png",
+        label: function() {
+            return this.name||"Events";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
+
+<!-- getConversationItems --> 
+
+<script type="text/x-red" data-template-name="getConversationItems">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-conv"><i class="fa fa-plus-square"></i> Conv ID</label>
+        <input type="text" id="node-input-conv" placeholder="abcd1234-e567-f890-a123-abcdef123456">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="getConversationItems">
+    <p>Retrieve multiple conversation items via the Circuit API</p>
+    <p>This node requires msg.payload to be an object with the following properties
+    <ul>
+        <li><code>direction</code> string of 'BEFORE' or 'AFTER' (default: BEFORE)</li>
+        <li><code>creationTime</code> timestamp in milliseconds for items created (default: current)</li>
+        <li><code>modificationDate</code> timestamp in milliseconds for items updated (default: current)</li>
+        <li><code>numberOfItems</code> number of items to return (default: 25)</li>
+    </ul>
+    You can check details about getConversationItems on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getConversationItems" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('getConversationItems',{
+        category: 'Circuit',
+        defaults: {
+            server: {value:"", type:"circuit-server"},
+            conv: {value:""},
+            name: {value:"",required:false},
+        },
+        color: "#88C540",
+        inputs:1,
+        outputs:1,
+        icon: "circuit.png",
+        label: function() {
+            return this.name||this.conv||"getConversationItems";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        }
+    });
+</script>
