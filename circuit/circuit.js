@@ -19,7 +19,6 @@ module.exports = (RED) => {
         node.connected = false;
         node.state = "Disconnected";
         node.reconnectCount = 0;
-        node.renewTokenLoop = false;
         node.subscriptions = {};
         node.user = null;
         
@@ -28,6 +27,7 @@ module.exports = (RED) => {
                 domain: node.domain,
                 client_id: node.clientid,
                 client_secret: node.clientsecret,
+                autoRenewToken: true,
                 scope: 'ALL'
             });
         }
@@ -96,10 +96,16 @@ module.exports = (RED) => {
                 node.client.logout();
             }
         });
-        node.client.addEventListener('sessionExpires', (evt) => {
+        node.client.addEventListener('accessTokenRenewed', (evt) => {
             node.error(util.inspect(evt, { showHidden: true, depth: null }));
         });
-        node.client.addEventListener('renewToken', (evt) => {
+        node.client.addEventListener('renewAccessTokenFailed', (evt) => {
+            node.error(util.inspect(evt, { showHidden: true, depth: null }));
+        });
+        node.client.addEventListener('sessionTokenRenewed', (evt) => {
+            node.error(util.inspect(evt, { showHidden: true, depth: null }));
+        });
+        node.client.addEventListener('renewSessionTokenFailed', (evt) => {
             node.error(util.inspect(evt, { showHidden: true, depth: null }));
         });
         
@@ -144,12 +150,6 @@ module.exports = (RED) => {
         };
         
         node.logon();
-        
-        if (node.renewTokenLoop) {clearInterval(node.renewTokenLoop);}
-        node.renewTokenLoop = setInterval(() => {
-            node.log('renewing token: ' + node.clientid + ' domain: ' + node.client.domain);
-            node.client.renewToken();
-        }, 86400000);
         
         this.on('close', () => {
             node.log('log out ' + node.clientid + ' from domain: ' + node.client.domain);
