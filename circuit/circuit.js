@@ -167,7 +167,7 @@ module.exports = (RED) => {
         node.conv = n.conv;
         node.server = RED.nodes.getNode(n.server);
         
-        node.server.subscribe(node.id, 'state', function(state) {
+        node.server.subscribe(node.id, 'state', (state) => {
             node.status({fill:(state == 'Connected') ? 'green' : 'red',shape:'dot',text:state});
         });
         
@@ -207,26 +207,26 @@ module.exports = (RED) => {
         node.itemEvent = n.itemEvent;
         node.userEvent = n.userEvent;
         
-        node.server.subscribe(node.id, 'state', function(state) {
+        node.server.subscribe(node.id, 'state', (state) => {
             node.status({fill:(state == 'Connected') ? 'green' : 'red',shape:'dot',text:state});
         });
 
         if (node.callEvent) {
-            node.server.subscribe(node.id, 'callStatus',    function(evt) { node.send({ payload: evt }); });
-            node.server.subscribe(node.id, 'callIncoming',  function(evt) { node.send({ payload: evt }); });
-            node.server.subscribe(node.id, 'callEnded',     function(evt) { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'callStatus',   (evt) => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'callIncoming', (evt) => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'callEnded',    (evt) => { node.send({ payload: evt }); });
         }
         if (node.convEvent) {
-            node.server.subscribe(node.id, 'conversationUpdated',   function(evt) { node.send({ payload: evt }); });
-            node.server.subscribe(node.id, 'conversationCreated',   function(evt) { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'conversationUpdated', (evt) => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'conversationCreated', (evt) => { node.send({ payload: evt }); });
         }
         if (node.itemEvent) {
-            node.server.subscribe(node.id, 'itemAdded',     function(evt) { node.send({ payload: evt }); });
-            node.server.subscribe(node.id, 'itemUpdated',   function(evt) { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'itemAdded',   (evt) => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'itemUpdated', (evt) => { node.send({ payload: evt }); });
         }
         if (node.userEvent) {
-            node.server.subscribe(node.id, 'userSettingsChanged',   function(evt) { node.send({ payload: evt }); });
-            node.server.subscribe(node.id, 'userUpdated',           function(evt) { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'userSettingsChanged', (evt) => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'userUpdated',         (evt) => { node.send({ payload: evt }); });
         }
         
         node.on('close', () => {
@@ -240,10 +240,10 @@ module.exports = (RED) => {
     function getConversationItems(n) {
         RED.nodes.createNode(this,n);
         let node = this;
-        node.conv = n.conv;
+        node.conv = n.conv || "";
         node.server = RED.nodes.getNode(n.server);
         
-        node.server.subscribe(node.id, 'state', function(state) {
+        node.server.subscribe(node.id, 'state', (state) => {
             node.status({fill:(state == 'Connected') ? 'green' : 'red',shape:'dot',text:state});
         });
         
@@ -280,7 +280,7 @@ module.exports = (RED) => {
         node.search = n.search || "";
         node.server = RED.nodes.getNode(n.server);
         
-        node.server.subscribe(node.id, 'state', function(state) {
+        node.server.subscribe(node.id, 'state', (state) => {
             node.status({fill:(state == 'Connected') ? 'green' : 'red',shape:'dot',text:state});
         });
         
