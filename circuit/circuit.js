@@ -79,6 +79,7 @@ module.exports = (RED) => {
             }
         };
         
+        // event listener for connectionStateChanged events. handles data in node.state and node.connected
         node.client.addEventListener('connectionStateChanged', (evt) => {
             node.log(util.inspect(evt, { showHidden: true, depth: null }));
             node.state = evt.state;
@@ -89,6 +90,7 @@ module.exports = (RED) => {
             }
             node.broadcast('state', node.state);
         });
+        // event listener for reconnectFailed events. after 10 reconnectFailed events, we will try a complete new login
         node.client.addEventListener('reconnectFailed', (evt) => {
             node.error(util.inspect(evt, { showHidden: true, depth: null }));
             node.reconnectCount ++;
@@ -96,31 +98,22 @@ module.exports = (RED) => {
                 node.client.logout();
             }
         });
-        node.client.addEventListener('accessTokenRenewed', (evt) => {
-            node.error(util.inspect(evt, { showHidden: true, depth: null }));
+        // event listeners for "logging only" generic events
+        ['accessTokenRenewed', 'sessionTokenRenewed'].forEach((elem, index, arr) => {
+            node.client.addEventListener(elem, evt => node.log(util.inspect(evt, { showHidden: true, depth: null })));
         });
-        node.client.addEventListener('renewAccessTokenFailed', (evt) => {
-            node.error(util.inspect(evt, { showHidden: true, depth: null }));
+        // event listeners for "logging only" error events
+        ['renewAccessTokenFailed', 'renewSessionTokenFailed'].forEach((elem, index, arr) => {
+            node.client.addEventListener(elem, evt => node.error(util.inspect(evt, { showHidden: true, depth: null })));
         });
-        node.client.addEventListener('sessionTokenRenewed', (evt) => {
-            node.error(util.inspect(evt, { showHidden: true, depth: null }));
-        });
-        node.client.addEventListener('renewSessionTokenFailed', (evt) => {
-            node.error(util.inspect(evt, { showHidden: true, depth: null }));
+        // event listeners for all events that need to be "broadcasted" to all nodes.
+        ['callStatus', 'callIncoming', 'callEnded', 'conversationUpdated', 'conversationCreated', 'itemUpdated', 'itemAdded',
+         'userSettingsChanged', 'userUpdated', 'userPresenceChanged', 'basicSearchResults']
+        .forEach((elem, index, arr) => {
+            node.client.addEventListener(elem, evt => node.broadcast(elem, evt));
         });
         
-        node.client.addEventListener('callStatus',          evt => node.broadcast('callStatus', evt));
-        node.client.addEventListener('callIncoming',        evt => node.broadcast('callIncoming', evt));
-        node.client.addEventListener('callEnded',           evt => node.broadcast('callEnded', evt));
-        node.client.addEventListener('conversationUpdated', evt => node.broadcast('conversationUpdated', evt));
-        node.client.addEventListener('conversationCreated', evt => node.broadcast('conversationCreated', evt));
-        node.client.addEventListener('itemUpdated',         evt => node.broadcast('itemUpdated', evt));
-        node.client.addEventListener('itemAdded',           evt => node.broadcast('itemAdded', evt));
-        node.client.addEventListener('userSettingsChanged', evt => node.broadcast('userSettingsChanged', evt));
-        node.client.addEventListener('userUpdated',         evt => node.broadcast('userUpdated', evt));
-        node.client.addEventListener('userPresenceChanged', evt => node.broadcast('userPresenceChanged', evt));
-        node.client.addEventListener('basicSearchResults',  evt => node.broadcast('basicSearchResults', evt));
-        
+        // subscribe and unsubscribe handling
         node.subscribe = (id, type, cb) => {
             node.log('receive subscribe for >' + type + '< from >' + id + '<');
             node.subscriptions[id] = node.subscriptions[id] || {};
@@ -129,7 +122,6 @@ module.exports = (RED) => {
                 node.broadcast('state', node.state);
             }
         };
-        
         node.unsubscribe = (id, type) => {
             if (node.subscriptions[id].hasOwnProperty(type)) {
                 delete node.subscriptions[id][type];
@@ -138,9 +130,9 @@ module.exports = (RED) => {
                 delete node.subscriptions[id];
             }
         };
-        
+        // broadcast events to subscribed nodes
         node.broadcast = (type, data) => {
-            node.log('broadcasting to all >' + type + '< listeners: ' + util.inspect(data, { showHidden: true, depth: null }));
+            node.log('broadcasting to all >' + type + '< listeners:\n' + util.inspect(data, { showHidden: true, depth: null }));
             for (var s in node.subscriptions) {
                 if (node.subscriptions[s].hasOwnProperty(type)) {
                     node.log('listener for >' + type + '< at node >' + s + '<');
