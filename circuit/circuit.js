@@ -42,10 +42,6 @@ module.exports = (RED) => {
                     node.user = user;
                     node.log('user ' + node.clientid + ' logged on at domain ' + node.client.domain + ' (' + user.displayName + ')');
                     node.log(util.inspect(node.client, { showHidden: true, depth: null }));
-                    node.client.setPresence({state: Circuit.Constants.PresenceState.AVAILABLE})
-                    .then(() => node.log('set presence state to ' + Circuit.Constants.PresenceState.AVAILABLE))
-                    .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
-                    node.updateUser();
                 })
                 .catch((err) => {
                     node.connected = false;
@@ -59,6 +55,11 @@ module.exports = (RED) => {
         };
         
         node.updateUser = () => {
+            // set presence state to AVAILABLE
+            node.client.setPresence({state: Circuit.Constants.PresenceState.AVAILABLE})
+            .then(() => node.log('set presence state to ' + Circuit.Constants.PresenceState.AVAILABLE))
+            .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
+            // set firstname, lastname if enabled
             let userObj = {};
             if (node.allowFirstname && node.firstname != node.user.firstName) {
                 userObj.firstName = node.firstname;
@@ -72,6 +73,7 @@ module.exports = (RED) => {
                 .then(() => node.log('updated user data: ' + util.inspect(userObj, { showHidden: true, depth: null })))
                 .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
             }
+            // set status message if enabled
             if (node.allowStatusMsg) {
                 node.client.setStatusMessage(node.statusMsg)
                 .then(() => node.log('Status message set: ' + node.statusMsg))
@@ -83,10 +85,16 @@ module.exports = (RED) => {
         node.client.addEventListener('connectionStateChanged', (evt) => {
             node.log(util.inspect(evt, { showHidden: true, depth: null }));
             node.state = evt.state;
-            (evt.state === 'Connected') ? node.connected = true : node.connected = false;
-            if (evt.state == 'Disconnected') {
-                node.error('Disconnected. trying to logon: ' + node.clientid + ' domain: ' + node.client.domain);
-                node.logon();
+            if (evt.state == 'Connected') {
+                node.connected = true;
+                node.updateUser();
+            }
+            else {
+                node.connected = false;
+                if (evt.state == 'Disconnected') {
+                    node.error('Disconnected. trying to logon: ' + node.clientid + ' domain: ' + node.client.domain);
+                    node.logon();
+                }
             }
             node.broadcast('state', node.state);
         });
