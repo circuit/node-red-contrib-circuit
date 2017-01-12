@@ -42,6 +42,7 @@ module.exports = (RED) => {
                     node.user = user;
                     node.log('user ' + node.clientid + ' logged on at domain ' + node.client.domain + ' (' + user.displayName + ')');
                     node.log(util.inspect(node.client, { showHidden: true, depth: null }));
+                    node.updateUser();
                 })
                 .catch((err) => {
                     node.connected = false;
@@ -87,7 +88,9 @@ module.exports = (RED) => {
             node.state = evt.state;
             if (evt.state == 'Connected') {
                 node.connected = true;
-                node.updateUser();
+                if (node.user) {
+                    node.updateUser();
+                }
             }
             else {
                 node.connected = false;
