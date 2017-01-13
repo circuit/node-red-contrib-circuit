@@ -105,7 +105,7 @@ module.exports = (RED) => {
         node.client.addEventListener('reconnectFailed', (evt) => {
             node.error(util.inspect(evt, { showHidden: true, depth: null }));
             node.reconnectCount ++;
-            if (node.reconnectCount >= 10) {
+            if (node.reconnectCount > 4) {
                 node.client.logout();
             }
         });
