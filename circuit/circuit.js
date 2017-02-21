@@ -175,6 +175,9 @@ module.exports = (RED) => {
         });
         
         node.on('input', (msg) => {
+            if (msg.conv) {
+                node.conv = msg.conv;
+            }
             if(node.server.connected) {
                 node.server.client.addTextItem(node.conv, msg.payload)
                 .then((item) => {
