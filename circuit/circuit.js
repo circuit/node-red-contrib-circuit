@@ -1,7 +1,7 @@
  
 module.exports = (RED) => {
     const util = require('util');
-    const Circuit = require('circuit');
+    const Circuit = require('circuit-sdk');
     
     // handle the connection to the circuit server
     function CircuitServerNode(n) {
