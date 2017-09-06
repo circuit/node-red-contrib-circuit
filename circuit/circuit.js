@@ -385,7 +385,7 @@ module.exports = (RED) => {
                 }
                 node.server.client.getDirectConversationWithUser(msg.payload.user, msg.payload.create)
                 .then((conv) => {
-                    node.log('getDirectConversationWithUser returned conversation ' + conv.convId);
+                    node.log('getDirectConversationWithUser returned ' + ((conv && conv.convId) ? ' conversation' + conv.convId : 'no conversation'));
                     msg.payload = conv;
                     node.send(msg);
                 })
