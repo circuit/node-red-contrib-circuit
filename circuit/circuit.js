@@ -364,4 +364,46 @@ module.exports = (RED) => {
         });
     }
     RED.nodes.registerType("startUserSearch",startUserSearch);
+    
+    //getDirectConversationWithUser 
+    function getDirectConversationWithUser(n) {
+        RED.nodes.createNode(this,n);
+        let node = this;
+        node.server = RED.nodes.getNode(n.server);
+        
+        node.server.subscribe(node.id, 'state', (state) => {
+            node.status({fill:(state == 'Connected') ? 'green' : 'red',shape:'dot',text:state});
+        });
+        
+        node.on('input', (msg) => {
+            if(node.server.connected) {
+                if (!(msg.payload instanceof Object)) {
+                    msg.payload = {
+                        user: msg.payload,
+                        create: false
+                    }
+                }
+                node.server.client.getDirectConversationWithUser(msg.payload.user, msg.payload.create)
+                .then((conv) => {
+                    node.log('getDirectConversationWithUser returned conversation ' + conv.convId);
+                    msg.payload = conv;
+                    node.send(msg);
+                })
+                .catch((err) => {
+                    node.error(util.inspect(err, { showHidden: true, depth: null }));
+                    msg.payload = err;
+                    node.send(msg);
+                });
+            }
+            else {
+                node.error('not connected to server');
+            }
+        });
+        
+        node.on('close', () => {
+            node.server.unsubscribe(node.id, 'state');
+            node.send({ payload: {state: 'stopping'} });
+        });
+    }
+    RED.nodes.registerType("getDirectConversationWithUser",getDirectConversationWithUser);
 };
