@@ -377,7 +377,7 @@ module.exports = (RED) => {
         
         node.on('input', (msg) => {
             if(node.server.connected) {
-                if (!(msg.payload instanceof Object)) {
+                if (typeof msg.payload === 'string') {
                     msg.payload = {
                         user: msg.payload,
                         create: false
