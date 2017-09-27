@@ -16,6 +16,7 @@ module.exports = (RED) => {
         node.lastname = n.lastname;
         node.allowStatusMsg = n.allowStatusMsg;
         node.statusMsg = n.statusMsg;
+        node.loglevel = n.loglevel || 'Error';
         node.connected = false;
         node.state = "Disconnected";
         node.reconnectCount = 0;
@@ -32,6 +33,8 @@ module.exports = (RED) => {
             });
         }
         
+        Circuit.logger.setLevel(Circuit.Enums.LogLevel[node.loglevel]);
+        
         node.logon = () => {
             node.log('node.logon()');
             if (node.connected === false) {
@@ -41,7 +44,6 @@ module.exports = (RED) => {
                     node.reconnectCount = 0;
                     node.user = user;
                     node.log('user ' + node.clientid + ' logged on at domain ' + node.client.domain + ' (' + user.displayName + ')');
-                    node.log(util.inspect(node.client, { showHidden: true, depth: null }));
                     node.updateUser();
                 })
                 .catch((err) => {

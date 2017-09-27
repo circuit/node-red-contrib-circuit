@@ -1,27 +1,38 @@
 <script type="text/x-red" data-template-name="circuit-server">
     <div class="form-row">
-        <label for="node-config-input-domain"><i class="icon-bookmark"></i> Domain</label>
-        <input type="text" id="node-config-input-domain">
+        <label for="node-config-input-domain" style="width: 25%"><i class="icon-bookmark"></i> Domain</label>
+        <input type="text" id="node-config-input-domain" style="width: 70%;">
     </div>
     <div class="form-row">
-        <label for="node-config-input-clientid"><i class="icon-bookmark"></i> Client ID</label>
-        <input type="text" id="node-config-input-clientid">
+        <label for="node-config-input-clientid" style="width: 25%"><i class="icon-bookmark"></i> Client ID</label>
+        <input type="text" id="node-config-input-clientid" style="width: 70%;">
     </div>
     <div class="form-row">
-        <label for="node-config-input-clientsecret"><i class="icon-bookmark"></i> Client Secret</label>
-        <input type="password" id="node-config-input-clientsecret">
+        <label for="node-config-input-clientsecret" style="width: 25%"><i class="icon-bookmark"></i> Client Secret</label>
+        <input type="password" id="node-config-input-clientsecret" style="width: 70%;">
     </div>
     <div class="form-row">
-        <label><input type="checkbox" id="node-config-input-allowFirstname" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Firstname</label>
-        <input type="text" id="node-config-input-firstname">
+        <label style="width: 25%"><input type="checkbox" id="node-config-input-allowFirstname" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Firstname</label>
+        <input type="text" id="node-config-input-firstname" style="width: 70%;">
     </div>
     <div class="form-row">
-        <label><input type="checkbox" id="node-config-input-allowLastname" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Lastname</label>
-        <input type="text" id="node-config-input-lastname">
+        <label style="width: 25%"><input type="checkbox" id="node-config-input-allowLastname" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Lastname</label>
+        <input type="text" id="node-config-input-lastname" style="width: 70%;">
     </div>
     <div class="form-row">
-        <label><input type="checkbox" id="node-config-input-allowStatusMsg" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Status msg</label>
-        <input type="text" id="node-config-input-statusMsg">
+        <label style="width: 25%"><input type="checkbox" id="node-config-input-allowStatusMsg" style="display: inline-block; width: auto; vertical-align: top;">&nbsp;Status msg</label>
+        <input type="text" id="node-config-input-statusMsg" style="width: 70%;">
+    </div>
+    <div class="form-row">
+        <label for="node-config-loglevel" style="width: 25%;">Loglevel</label>
+        <select type="text" id="node-config-input-loglevel" style="width: 70%;">
+            <option value="" selected disabled hidden>Choose...</option>
+            <option value="Debug">Debug</option>
+            <option value="Info">Info</option>
+            <option value="Warning">Warning</option>
+            <option value="Error">Error</option>
+            <option value="Off">Off</option>
+        </select>
     </div>
 </script>
 
@@ -38,6 +49,7 @@
             lastname: {value:"", required:false},
             allowStatusMsg: {value:false},
             statusMsg: {value:"", required:false},
+            loglevel: {value:"Error"},
         },
         label: function() {
             return this.clientid.substring(0, 8) + "...@" + this.domain;
