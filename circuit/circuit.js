@@ -8,6 +8,7 @@ module.exports = (RED) => {
         RED.nodes.createNode(this, n);
         let node = this;
         node.domain = n.domain;
+        node.scope = n.allowScope && n.scope ? n.scope : 'ALL';
         node.clientid = n.clientid;
         node.clientsecret = n.clientsecret;
         node.allowFirstname = n.allowFirstname;
@@ -29,7 +30,7 @@ module.exports = (RED) => {
                 client_id: node.clientid,
                 client_secret: node.clientsecret,
                 autoRenewToken: true,
-                scope: 'ALL'
+                scope: node.scope
             });
         }
         
@@ -38,6 +39,7 @@ module.exports = (RED) => {
         node.logon = () => {
             node.log('node.logon()');
             if (node.client && node.connected === false) {
+                console.log(node.scope);
                 node.connected = true;
                 node.client.logon()
                     .then(user => {
@@ -58,7 +60,7 @@ module.exports = (RED) => {
             }
         };
         
-        node.updateUser = () => {
+        // node.updateUser = () => {
             // set presence state to AVAILABLE
             // node.client.setPresence({state: Circuit.Constants.PresenceState.AVAILABLE})
             // .then(() => node.log('set presence state to ' + Circuit.Constants.PresenceState.AVAILABLE))
@@ -83,7 +85,7 @@ module.exports = (RED) => {
             //     .then(() => node.log('Status message set: ' + node.statusMsg))
             //     .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
             // }
-        };
+        // };
         
         // event listener for connectionStateChanged events. handles data in node.state and node.connected
         node.client.addEventListener('connectionStateChanged', evt => {
@@ -173,7 +175,7 @@ module.exports = (RED) => {
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', state => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red',shape:'dot',text:state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
         });
         
         node.on('input', (msg) => {
@@ -211,7 +213,7 @@ module.exports = (RED) => {
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', state => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
         });
         
         node.on('input', msg => {
@@ -250,7 +252,7 @@ module.exports = (RED) => {
         node.userEvent = n.userEvent;
         
         node.server.subscribe(node.id, 'state', state => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red',shape:'dot',text:state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
         });
 
         if (node.callEvent) {
@@ -263,12 +265,12 @@ module.exports = (RED) => {
             node.server.subscribe(node.id, 'conversationCreated', evt => { node.send({ payload: evt }); });
         }
         if (node.itemEvent) {
-            node.server.subscribe(node.id, 'itemAdded',   evt => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'itemAdded', evt => { node.send({ payload: evt }); });
             node.server.subscribe(node.id, 'itemUpdated', evt => { node.send({ payload: evt }); });
         }
         if (node.userEvent) {
             node.server.subscribe(node.id, 'userSettingsChanged', evt => { node.send({ payload: evt }); });
-            node.server.subscribe(node.id, 'userUpdated',         evt => { node.send({ payload: evt }); });
+            node.server.subscribe(node.id, 'userUpdated', evt => { node.send({ payload: evt }); });
         }
         
         node.on('close', () => {
@@ -286,7 +288,7 @@ module.exports = (RED) => {
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', (state) => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red',shape:'dot',text:state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red',shape:'dot',text:state});
         });
         
         node.on('input', msg => {
@@ -319,13 +321,13 @@ module.exports = (RED) => {
     
     //startUserSearch
     function startUserSearch(n) {
-        RED.nodes.createNode(this,n);
+        RED.nodes.createNode(this, n);
         let node = this;
         node.search = n.search || '';
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', state => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
         });
         
         node.server.subscribe(node.id, 'basicSearchResults', evt => {
@@ -350,12 +352,11 @@ module.exports = (RED) => {
                         node.log('startUserSearch with searchId ' + searchId);
                         node.send({ payload: searchId });
                     })
-                    .catch((err) => {
+                    .catch(err => {
                         node.error(util.inspect(err, { showHidden: true, depth: null }));
                         node.send({ payload: err });
                     });
-            }
-            else {
+            } else {
                 node.error('not connected to server');
             }
         });
@@ -365,7 +366,7 @@ module.exports = (RED) => {
             node.send({ payload: {state: 'stopping'} });
         });
     }
-    RED.nodes.registerType("startUserSearch",startUserSearch);
+    RED.nodes.registerType('startUserSearch', startUserSearch);
     
     //getDirectConversationWithUser 
     function getDirectConversationWithUser(n) {
@@ -374,7 +375,7 @@ module.exports = (RED) => {
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', state => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
         });
         
         node.on('input', msg => {
@@ -396,8 +397,7 @@ module.exports = (RED) => {
                         msg.payload = err;
                         node.send(msg);
                     });
-            }
-            else {
+            } else {
                 node.error('not connected to server');
             }
         });
@@ -416,7 +416,7 @@ module.exports = (RED) => {
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', state => {
-            node.status({fill:(state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
+            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
         });
         
         node.on('input', msg => {
