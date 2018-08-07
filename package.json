@@ -7,7 +7,12 @@
     },
     "description": "node-red circuit extension",
     "name": "node-red-contrib-circuit",
-    "keywords": [ "node-red", "circuit", "yourcircuit", "unify" ],
+    "keywords": [
+        "node-red",
+        "circuit",
+        "yourcircuit",
+        "unify"
+    ],
     "node-red": {
         "nodes": {
             "circuit": "circuit/circuit.js"

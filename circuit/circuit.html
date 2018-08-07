@@ -367,3 +367,45 @@
         }
     });
 </script>
+
+<!-- getConversationsByIds --> 
+
+<script type="text/x-red" data-template-name="getConversationsByIds">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="getConversationsByIds">
+    <p>Gets an array of conversations.</p>
+    <p>This node requires msg.payload to be an object with the following properties
+        <ul>
+            <li><code>convIds</code> A convId or an array of convIds to be returned.</li>
+        </ul>
+    </p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('getConversationsByIds',{
+        category: 'Circuit',
+        defaults: {
+            server: {value:"", type:"circuit-server"},
+            name: {value:"",required:false},
+        },
+        color: "#88C540",
+        inputs:1,
+        outputs:1,
+        icon: "circuit.png",
+        label: function() {
+            return this.name || this.conv || "getConversationsByIds";
+        },
+        labelStyle: function() {
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+</script>
