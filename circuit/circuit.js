@@ -169,7 +169,7 @@ module.exports = (RED) => {
     function addTextItem(n) {
         RED.nodes.createNode(this, n);
         let node = this;
-        node.conv = n.conv;
+        node.convId = n.convId;
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', state => {
@@ -177,11 +177,11 @@ module.exports = (RED) => {
         });
         
         node.on('input', (msg) => {
-            if (msg.conv) {
-                node.conv = msg.conv;
+            if (msg.convId) {
+                node.convId = msg.convId;
             }
             if (node.server.connected) {
-                node.server.client.addTextItem(node.conv, msg.payload)
+                node.server.client.addTextItem(node.convId, msg.payload)
                     .then(item => {
                         node.log('message sent');
                         msg.payload = item;
@@ -282,7 +282,7 @@ module.exports = (RED) => {
     function getConversationItems(n) {
         RED.nodes.createNode(this, n);
         let node = this;
-        node.conv = n.conv || '';
+        node.convId = n.convId || '';
         node.server = RED.nodes.getNode(n.server);
         
         node.server.subscribe(node.id, 'state', (state) => {

@@ -66,7 +66,7 @@
     </div>
     <div class="form-row">
         <label for="node-input-conv"><i class="fa fa-plus-square"></i> Conv ID</label>
-        <input type="text" id="node-input-conv" placeholder="abcd1234-e567-f890-a123-abcdef123456">
+        <input type="text" id="node-input-convId" placeholder="abcd1234-e567-f890-a123-abcdef123456">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
@@ -89,22 +89,22 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('addTextItem',{
+    RED.nodes.registerType('addTextItem', {
         category: 'Circuit',
         defaults: {
-            server: {value:"", type:"circuit-server"},
-            conv: {value:""},
-            name: {value:"",required:false},
+            server: {value: "", type: "circuit-server"},
+            convId: {value: ""},
+            name: {value:"", required:false},
         },
         color: "#88C540",
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
-            return this.name||this.conv||"addTextItem";
+            return this.name || this.convId || "addTextItem";
         },
         labelStyle: function() {
-            return this.name?"node_label_italic":"";
+            return this.name ? "node_label_italic" : "";
         }
     });
 </script>
@@ -140,18 +140,18 @@
     RED.nodes.registerType('updateTextItem',{
         category: 'Circuit',
         defaults: {
-            server: {value:"", type:"circuit-server"},
-            name: {value:"",required:false},
+            server: {value: "", type: "circuit-server"},
+            name: {value: "", required: false},
         },
         color: "#88C540",
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
-            return this.name||this.conv||"updateTextItem";
+            return this.name || "updateTextItem";
         },
         labelStyle: function() {
-            return this.name?"node_label_italic":"";
+            return this.name ? "node_label_italic" : "";
         }
     });
 </script>
@@ -208,21 +208,21 @@
         category: 'Circuit',
         defaults: {
             server: {value:"", type:"circuit-server"},
-            callEvent: {value:true},
-            convEvent: {value:true},
-            itemEvent: {value:true},
-            userEvent: {value:true},
-            name: {value:"",required:false},
+            callEvent: {value: true},
+            convEvent: {value: true},
+            itemEvent: {value: true},
+            userEvent: {value: true},
+            name: {value: "", required: false},
         },
         color: "#88C540",
-        inputs:0,
-        outputs:1,
+        inputs: 0,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
-            return this.name||"Events";
+            return this.name || "Events";
         },
         labelStyle: function() {
-            return this.name?"node_label_italic":"";
+            return this.name ? "node_label_italic" : "";
         }
     });
 </script>
@@ -235,8 +235,8 @@
         <input type="text" id="node-input-server">
     </div>
     <div class="form-row">
-        <label for="node-input-conv"><i class="fa fa-plus-square"></i> Conv ID</label>
-        <input type="text" id="node-input-conv" placeholder="abcd1234-e567-f890-a123-abcdef123456">
+        <label for="node-input-convId"><i class="fa fa-plus-square"></i> Conv ID</label>
+        <input type="text" id="node-input-convId" placeholder="abcd1234-e567-f890-a123-abcdef123456">
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
@@ -261,16 +261,16 @@
     RED.nodes.registerType('getConversationItems',{
         category: 'Circuit',
         defaults: {
-            server: {value:"", type:"circuit-server"},
-            conv: {value:""},
-            name: {value:"",required:false},
+            server: {value: "" , type: "circuit-server"},
+            convId: {value: ""},
+            name: {value: "", required: false},
         },
         color: "#88C540",
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
-            return this.name||this.conv||"getConversationItems";
+            return this.name || this.convId || "getConversationItems";
         },
         labelStyle: function() {
             return this.name?"node_label_italic":"";
@@ -307,19 +307,19 @@
     RED.nodes.registerType('startUserSearch',{
         category: 'Circuit',
         defaults: {
-            server: {value:"", type:"circuit-server"},
-            search: {value:""},
-            name: {value:"",required:false},
+            server: {value: "", type: "circuit-server"},
+            search: {value: ""},
+            name: {value: "", required: false},
         },
         color: "#88C540",
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
-            return this.name||this.conv||"startUserSearch";
+            return this.name || this.conv || "startUserSearch";
         },
         labelStyle: function() {
-            return this.name?"node_label_italic":"";
+            return this.name ? "node_label_italic" : "";
         }
     });
 </script>
@@ -352,18 +352,18 @@
     RED.nodes.registerType('getDirectConversationWithUser',{
         category: 'Circuit',
         defaults: {
-            server: {value:"", type:"circuit-server"},
-            name: {value:"",required:false},
+            server: {value: "", type: "circuit-server"},
+            name: {value: "",required: false},
         },
         color: "#88C540",
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
-            return this.name||this.conv||"getDirectConversationWithUser";
+            return this.name || this.conv || "getDirectConversationWithUser";
         },
         labelStyle: function() {
-            return this.name?"node_label_italic":"";
+            return this.name ? "node_label_italic" : "";
         }
     });
 </script>
@@ -394,12 +394,12 @@
     RED.nodes.registerType('getConversationsByIds',{
         category: 'Circuit',
         defaults: {
-            server: {value:"", type:"circuit-server"},
-            name: {value:"",required:false},
+            server: {value: "", type: "circuit-server"},
+            name: {value: "", required: false},
         },
         color: "#88C540",
-        inputs:1,
-        outputs:1,
+        inputs: 1,
+        outputs: 1,
         icon: "circuit.png",
         label: function() {
             return this.name || this.conv || "getConversationsByIds";
