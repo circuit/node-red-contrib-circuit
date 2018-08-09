@@ -39,7 +39,6 @@ module.exports = (RED) => {
         node.logon = () => {
             node.log('node.logon()');
             if (node.client && node.connected === false) {
-                console.log(node.scope);
                 node.connected = true;
                 node.client.logon()
                     .then(user => {

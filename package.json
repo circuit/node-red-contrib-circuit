@@ -5,6 +5,11 @@
     "dependencies": {
         "circuit-sdk": "*"
     },
+    "devDependencies": {
+        "mocha": "^5.2.0",
+        "node-red": "^0.18.7",
+        "node-red-node-test-helper": "^0.1.8"
+    },
     "description": "node-red circuit extension",
     "name": "node-red-contrib-circuit",
     "keywords": [
@@ -17,6 +22,9 @@
         "nodes": {
             "circuit": "circuit/circuit.js"
         }
+    },
+    "scripts": {
+        "test": "mocha ./test/* --recursive --timeout=60000 --exit"
     },
     "version": "1.7.2"
 }
