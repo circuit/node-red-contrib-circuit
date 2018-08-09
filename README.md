@@ -12,13 +12,14 @@ Requires a "https://circuitsandbox.net" account with a bot to host the applicati
 
 ## Installation
 
-1. Either install via pallette or via "npm install"
+1. Either install via pallette or via "npm install".
     $ npm i -S node-red-contrib-circuit
 
 ## Usage
 
 1. Select node with API functionality you desire.
-2. Set up the circuit-server information needed for bot, such as: client_id, client_secret, domain, etc.
+2. Enter up the circuit-server information needed for bot, such as: client_id, client_secret, domain, etc.
+3. Additional information on circuit client can be found at:[https://circuitsandbox.net/sdk/classes/Client.html](https://circuitsandbox.net/sdk/classes/Client.html).
 
 ## License
 
