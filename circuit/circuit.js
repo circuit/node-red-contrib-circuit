@@ -11,12 +11,6 @@ module.exports = (RED) => {
         node.scope = n.allowScope && n.scope ? n.scope : 'ALL';
         node.clientid = n.clientid;
         node.clientsecret = n.clientsecret;
-        node.allowFirstname = n.allowFirstname;
-        node.firstname = n.firstname;
-        node.allowLastname = n.allowLastname;
-        node.lastname = n.lastname;
-        node.allowStatusMsg = n.allowStatusMsg;
-        node.statusMsg = n.statusMsg;
         node.loglevel = n.loglevel || 'Error';
         node.connected = false;
         node.state = 'Disconnected';
@@ -46,7 +40,6 @@ module.exports = (RED) => {
                         node.reconnectCount = 0;
                         node.user = user;
                         node.log('user ' + node.clientid + ' logged on at domain ' + node.client.domain + ' (' + user.displayName + ')');
-                        // node.updateUser();
                     })
                     .catch(err => {
                         node.connected = false;
@@ -59,42 +52,12 @@ module.exports = (RED) => {
             }
         };
         
-        // node.updateUser = () => {
-            // set presence state to AVAILABLE
-            // node.client.setPresence({state: Circuit.Constants.PresenceState.AVAILABLE})
-            // .then(() => node.log('set presence state to ' + Circuit.Constants.PresenceState.AVAILABLE))
-            // .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
-            // set firstname, lastname if enabled
-            // let userObj = {};
-            // if (node.allowFirstname && node.firstname != node.user.firstName) {
-            //     userObj.firstName = node.firstname;
-            // }
-            // if (node.allowLastname && node.lastname != node.user.lastName) {
-            //     userObj.lastName = node.lastname;
-            // }
-            // if (Object.keys(userObj).length > 0) {
-            //     userObj.userId = node.user.userId;
-            //     node.client.updateUser(userObj)
-            //     .then(() => node.log('updated user data: ' + util.inspect(userObj, { showHidden: true, depth: null })))
-            //     .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
-            // }
-            // // set status message if enabled
-            // if (node.allowStatusMsg) {
-            //     node.client.setStatusMessage(node.statusMsg)
-            //     .then(() => node.log('Status message set: ' + node.statusMsg))
-            //     .catch((err) => node.error(util.inspect(err, { showHidden: true, depth: null })));
-            // }
-        // };
-        
         // event listener for connectionStateChanged events. handles data in node.state and node.connected
         node.client.addEventListener('connectionStateChanged', evt => {
             node.log(util.inspect(evt, { showHidden: true, depth: null }));
             node.state = evt.state;
             if (evt.state == 'Connected') {
                 node.connected = true;
-                // if (node.user) {
-                //     node.updateUser();
-                // }
             } else {
                 if (evt.state === 'Disconnected') {
                     node.connected = false;
@@ -178,11 +141,11 @@ module.exports = (RED) => {
         });
         
         node.on('input', (msg) => {
-            if (msg.convId) {
-                node.convId = msg.convId;
+            if (msg.payload.convId) {
+                node.convId = msg.payload.convId;
             }
             if (node.server.connected) {
-                node.server.client.addTextItem(node.convId, msg.payload)
+                node.server.client.addTextItem(node.convId, msg.payload.content)
                     .then(item => {
                         node.log('message sent');
                         msg.payload = item;
@@ -291,11 +254,11 @@ module.exports = (RED) => {
         });
         
         node.on('input', msg => {
-            if (msg.convId) {
-                node.convId = msg.convId;
+            if (msg.payload.convId) {
+                node.convId = msg.payload.convId;
             }
             if (node.server.connected) {
-                node.server.client.getConversationItems(node.convId, msg.payload)
+                node.server.client.getConversationItems(node.convId, msg.payload.options)
                     .then((items) => {
                         node.log('getConversationItems returned ' + items.length + ' items');
                         msg.payload = items;
@@ -381,11 +344,11 @@ module.exports = (RED) => {
             if (node.server.connected) {
                 if (typeof msg.payload === 'string') {
                     msg.payload = {
-                        user: msg.payload,
+                        userId: msg.payload,
                         create: false
                     }
                 }
-                node.server.client.getDirectConversationWithUser(msg.payload.user, msg.payload.create)
+                node.server.client.getDirectConversationWithUser(msg.payload.userId, msg.payload.create)
                     .then(conv => {
                         node.log('getDirectConversationWithUser returned ' + ((conv && conv.convId) ? ' conversation' + conv.convId : 'no conversation'));
                         msg.payload = conv;
