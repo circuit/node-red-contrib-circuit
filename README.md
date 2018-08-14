@@ -1,5 +1,5 @@
 # node-red-contrib-circuit
-This node-red-contrib-circuit is simple [Node-Red](http://nodered.org) git ui that <br/>allows you to easily integrate the functionality of the circuit sdk into your applications using node-red.
+This node-red-contrib-circuit is simple [Node-Red](http://nodered.org) git ui that allows you to easily integrate the functionality of the circuit sdk into your applications using node-red.
 ## Pre-requisites
 [![NodeRed](https://img.shields.io/badge/Node--Red-0.18.7-red.svg)](http://nodered.org)
 [![NodeJS](https://img.shields.io/badge/Node.js-6.10.2-brightgreen.svg)](https://nodejs.org) <br/>
@@ -13,7 +13,7 @@ at the node-red github [here](https://github.com/node-red/node-red).
 ### Installing node-red-contrib-circuit
 Either install via pallette or via "npm install".<br/>
     `$ npm install node-red-contrib-circuit` <br/>
-Run the following command for global install
+Run the following command for global install. <br/>
     `$ npm install -g node-red-contrib-circuit` <br/>
 ## Getting started
 1. Install both `node-red` and `node-red-contrib-circuit` as displayed above.
