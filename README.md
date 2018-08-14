@@ -4,7 +4,7 @@ This node-red-contrib-circuit is simple [Node-Red](http://nodered.org) git ui th
 [![NodeRed](https://img.shields.io/badge/Node--Red-0.18.7-red.svg)](http://nodered.org)
 [![NodeJS](https://img.shields.io/badge/Node.js-6.10.2-brightgreen.svg)](https://nodejs.org) <br/>
 Requires [Node-Red](http://nodered.org) version 0.18.7 or more recent.<br/>
-Requires a [https://circuitsandbox.net](https://circuitsandbox.net) account with a bot to host the application with OAuth client_credentials.
+Requires a [https://circuitsandbox.net](https://circuitsandbox.net) account with a bot to host the application with OAuth `client_credentials`.
 ## Installations
 Make sure you have NodeRed installed on your machine, if not you can install it by running the below command. <br/>
     `$ npm install -g --unsafe-perm node-red` <br/>
