@@ -118,8 +118,9 @@ module.exports = (RED) => {
             }
         };
         
-        node.logon();
-        
+        if (!node.connected) {
+            node.logon();
+        }        
         this.on('close', () => {
             node.log('log out ' + node.clientid + ' from domain: ' + node.client.domain);
             node.client.removeAllListeners();
