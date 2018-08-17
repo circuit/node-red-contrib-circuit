@@ -19,7 +19,7 @@ Run the following command for global install. <br/>
 1. Install both `node-red` and `node-red-contrib-circuit` as displayed above.
 2. Once both packages are installed you will need a bot with OAuth client_credentials to run your application with.<br/>
 You can go [here](https://circuit.github.io/) and follow the instructions to obtain your credentials.
-3.  Start node-red by typing `$node-red` into the command line and wait for the server to be loaded. After node-red is running you should be able to go to `localhost:1880` to view your node-red server. If the node-red-contrib-circuit has been installed properly you should be able to scroll through your nodes and view the available API nodes to use.
+3.  Start node-red by typing `$ node-red` into the command line and wait for the server to be loaded. After node-red is running you should be able to go to `localhost:1880` to view your node-red server. If the node-red-contrib-circuit has been installed properly you should be able to scroll through your nodes and view the available API nodes to use.
 4. Once everything else is working you can follow the instructions in the <b>Usage</b> section.
 ## Usage
 1. Select node with API functionality you desire.
