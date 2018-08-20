@@ -1,15 +1,12 @@
-module.exports = function(RED) {
-    //startUserSearch
+module.exports = RED => {
     function startUserSearch(n) {
         RED.nodes.createNode(this, n);
         let node = this;
         node.search = n.search || '';
         node.server = RED.nodes.getNode(n.server);
         
-        node.server.subscribe(node.id, 'state', state => {
-            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
-        });
-        
+        node.server.subscribe(node.id, 'state', state => node.status(state));
+
         node.server.subscribe(node.id, 'basicSearchResults', evt => {
             if (evt.data && evt.data.users) {
                 node.server.client.getUsersById(evt.data.users)

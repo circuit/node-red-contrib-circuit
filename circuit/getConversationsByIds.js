@@ -1,14 +1,11 @@
-module.exports = function(RED) {
-    //getConversationsByIds 
+module.exports = RED => {
     function getConversationsByIds(n) {
         RED.nodes.createNode(this, n);
         let node = this;
         node.server = RED.nodes.getNode(n.server);
         
-        node.server.subscribe(node.id, 'state', state => {
-            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
-        });
-        
+        node.server.subscribe(node.id, 'state', state => node.status(state));
+
         node.on('input', msg => {
             if (node.server.connected) {
                 let convIds = [];

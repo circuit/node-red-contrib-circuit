@@ -1,16 +1,13 @@
-module.exports = function(RED) {
-    //handle outgoing text messages to circuit
+module.exports = RED => {
     function addTextItem(n) {
         RED.nodes.createNode(this, n);
         let node = this;
         node.convId = n.convId;
         node.server = RED.nodes.getNode(n.server);
         
-        node.server.subscribe(node.id, 'state', state => {
-            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
-        });
+        node.server.subscribe(node.id, 'state', state => node.status(state));
         
-        node.on('input', (msg) => {
+        node.on('input', msg => {
             if (msg.payload.convId) {
                 node.convId = msg.payload.convId;
             }

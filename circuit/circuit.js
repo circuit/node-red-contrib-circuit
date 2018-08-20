@@ -1,9 +1,8 @@
  
-module.exports = (RED) => {
+module.exports = RED => {
     const util = require('util');
     const Circuit = require('circuit-sdk');
-    
-    // handle the connection to the circuit server
+
     function CircuitServerNode(n) {
         if (!n._users || !n._users.length) {
             // if no nodes use this server return
@@ -17,7 +16,7 @@ module.exports = (RED) => {
         node.clientsecret = n.clientsecret;
         node.loglevel = n.loglevel || 'Error';
         node.connected = false;
-        node.state = 'Disconnected';
+        node.state = Circuit.Enums.ConnectionState.Disconnected;
         node.reconnectCount = 0;
         node.subscriptions = {};
         node.user = null;
@@ -60,10 +59,10 @@ module.exports = (RED) => {
         node.client.addEventListener('connectionStateChanged', evt => {
             node.log(util.inspect(evt, { showHidden: true, depth: null }));
             node.state = evt.state;
-            if (evt.state == 'Connected') {
+            if (evt.state == Circuit.Enums.ConnectionState.Connected) {
                 node.connected = true;
             } else {
-                if (evt.state === 'Disconnected') {
+                if (evt.state === Circuit.Enums.ConnectionState.Disconnected) {
                     node.connected = false;
                     node.error('Disconnected. trying to logon: ' + node.clientid + ' domain: ' + node.client.domain);
                     node.logon();
@@ -74,25 +73,18 @@ module.exports = (RED) => {
         // event listener for reconnectFailed events. after 10 reconnectFailed events, we will try a complete new login
         node.client.addEventListener('reconnectFailed', evt => {
             node.error(util.inspect(evt, { showHidden: true, depth: null }));
-            node.reconnectCount++;
-            if (node.reconnectCount > 4) {
+            if (node.reconnectCount++ > 4) {
                 node.client.logout();
             }
         });
         // event listeners for "logging only" generic events
-        ['accessTokenRenewed', 'sessionTokenRenewed'].forEach((elem, index, arr) => {
-            node.client.addEventListener(elem, evt => node.log(util.inspect(evt, { showHidden: true, depth: null })));
-        });
+        ['accessTokenRenewed', 'sessionTokenRenewed'].forEach(elem => node.client.addEventListener(elem, evt => node.log(util.inspect(evt, { showHidden: true, depth: null }))));
         // event listeners for "logging only" error events
-        ['renewAccessTokenFailed', 'renewSessionTokenFailed'].forEach((elem, index, arr) => {
-            node.client.addEventListener(elem, evt => node.error(util.inspect(evt, { showHidden: true, depth: null })));
-        });
+        ['renewAccessTokenFailed', 'renewSessionTokenFailed'].forEach(elem => node.client.addEventListener(elem, evt => node.error(util.inspect(evt, { showHidden: true, depth: null }))));
         // event listeners for all events that need to be "broadcasted" to all nodes.
         ['callStatus', 'callIncoming', 'callEnded', 'conversationUpdated', 'conversationCreated', 'itemUpdated', 'itemAdded',
          'userSettingsChanged', 'userUpdated', 'userPresenceChanged', 'basicSearchResults']
-        .forEach((elem, index, arr) => {
-            node.client.addEventListener(elem, evt => node.broadcast(elem, evt));
-        });
+        .forEach(elem => node.client.addEventListener(elem, evt => node.broadcast(elem, evt)));
         
         // subscribe and unsubscribe handling
         node.subscribe = (id, type, cb) => {
@@ -117,7 +109,7 @@ module.exports = (RED) => {
             for (var s in node.subscriptions) {
                 if (node.subscriptions[s].hasOwnProperty(type)) {
                     node.log('listener for >' + type + '< at node >' + s + '<');
-                    node.subscriptions[s][type](data);
+                    node.subscriptions[s][type]({fill: data === Circuit.Enums.ConnectionState.Connected ? 'green' : 'red', shape: 'dot', text: data});
                 }
             }
         };

@@ -1,5 +1,4 @@
-module.exports = function(RED) {
-    //incoming circuit events
+module.exports = RED => {
     function Events(n) {
         RED.nodes.createNode(this, n);
         let node = this;
@@ -9,9 +8,7 @@ module.exports = function(RED) {
         node.itemEvent = n.itemEvent;
         node.userEvent = n.userEvent;
         
-        node.server.subscribe(node.id, 'state', state => {
-            node.status({fill: (state === 'Connected') ? 'green' : 'red', shape: 'dot', text: state});
-        });
+        node.server.subscribe(node.id, 'state', state => node.status(state));
 
         if (node.callEvent) {
             node.server.subscribe(node.id, 'callStatus', evt => { node.send({ payload: evt }); });
