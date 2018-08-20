@@ -5,6 +5,10 @@ module.exports = (RED) => {
     
     // handle the connection to the circuit server
     function CircuitServerNode(n) {
+        if (!n._users || !n._users.length) {
+            // if no nodes use this server return
+            return;
+        }
         RED.nodes.createNode(this, n);
         let node = this;
         node.domain = n.domain;
