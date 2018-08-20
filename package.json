@@ -20,7 +20,14 @@
     ],
     "node-red": {
         "nodes": {
-            "circuit": "circuit/circuit.js"
+            "addTextItem": "circuit/addTextItem.js",
+            "circuit": "circuit/circuit.js",
+            "events": "circuit/events.js",
+            "getConversationItems": "circuit/getConversationItems.js",
+            "getConversationsByIds": "circuit/getConversationsByIds.js",
+            "getDirectConversationWithUser": "circuit/getDirectConversationWithUser.js",
+            "startUserSearch": "circuit/startUserSearch.js",
+            "updateTextItem": "circuit/updateTextItem.js"
         }
     },
     "scripts": {

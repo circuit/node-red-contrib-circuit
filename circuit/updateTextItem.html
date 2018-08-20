@@ -1,0 +1,46 @@
+<!-- updateTextItem --> 
+
+<script type="text/x-red" data-template-name="updateTextItem">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="updateTextItem">
+    <p>Send a new text message via the Circuit API</p>
+    <p>This node takes msg.payload as object. It requires the following attributes
+    <ul>
+        <li><code>itemId</code> The ID of an existing message item to update</li>
+        <li><code>subject</code> The message subject</li>
+        <li><code>content</code> The message content</li>
+        <li><code>attachments</code> An Array of HTML5 File objects as attachment.</li>
+    </ul>
+    You can check details about updateTextItem on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_updateTextItem" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+    <p>The output will be available as object within msg.payload</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('updateTextItem', {
+        category: 'Circuit',
+        defaults: {
+            server: {value: '', type: 'circuit-server'},
+            name: {value: '', required: false},
+        },
+        color: '#88C540',
+        inputs: 1,
+        outputs: 1,
+        icon: 'circuit.png',
+        label: function() {
+            return this.name || 'updateTextItem';
+        },
+        labelStyle: function() {
+            return this.name ? 'node_label_italic' : '';
+        }
+    });
+</script>
