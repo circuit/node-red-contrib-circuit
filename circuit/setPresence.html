@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="updateTextItem">
+<script type="text/x-red" data-template-name="setPresence">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server">
@@ -9,22 +9,19 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="updateTextItem">
-    <p>Send a new text message via the Circuit API</p>
+<script type="text/x-red" data-help-name="setPresence">
+    <p>Set the bots presence via the Circuit API</p>
     <p>This node takes msg.payload as object. It requires the following attributes
     <ul>
-        <li><code>itemId</code> The ID of an existing message item to update</li>
-        <li><code>subject</code> The message subject</li>
-        <li><code>content</code> The message content</li>
-        <li><code>attachments</code> An Array of HTML5 File objects as attachment.</li>
+        <li><code>presence</code> Presence Object containing changes.</li>
     </ul>
-    You can check details about updateTextItem on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_updateTextItem" target="_blank">https://circuitsandbox.net/sdk</a>
+    You can check details about setPresence on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_setPresence" target="_blank">https://circuitsandbox.net/sdk</a></br>
+    You can check Presence details on <a href="https://circuitsandbox.net/sdk/classes/Presence.html" target="_blank">here.</a>
     </p>
-    <p>The output will be available as object within msg.payload</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('updateTextItem', {
+    RED.nodes.registerType('setPresence', {
         category: 'Circuit',
         defaults: {
             server: {value: '', type: 'circuit-server'},
@@ -32,10 +29,9 @@
         },
         color: '#88C540',
         inputs: 1,
-        outputs: 1,
         icon: 'circuit.png',
         label: function() {
-            return this.name || 'updateTextItem';
+            return this.name || 'setPresence';
         },
         labelStyle: function() {
             return this.name ? 'node_label_italic' : '';

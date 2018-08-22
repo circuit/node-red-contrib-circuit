@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="addTextItem">
+<script type="text/x-red" data-template-name="addParticipant">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server">
@@ -13,22 +13,20 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="addTextItem">
-    <p>Send a new text message via the Circuit API</p>
+<script type="text/x-red" data-help-name="addParticipant">
+    <p>Add a participant, or participants, to a conversation via the Circuit API</p>
     <p>This node requires msg.payload to be an object with the following properties
     <ul>
-        <li><code>subject</code> The message subject</li>
-        <li><code>content</code> The message content</li>
-        <li><code>parentId</code> The ID of an existing message item to put this message as a comment</li>
-        <li><code>attachments</code> An Array of HTML5 File objects as attachment.</li>
+        <li><code>convId</code> The conversation Id.</li>
+        <li><code>userIds</code> The user Id(s) to be added. May be a string or array of userId(s)</li>
     </ul>
-    You can check details about addTextItem on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_addTextItem" target="_blank">https://circuitsandbox.net/sdk</a>
+    You can check details about addParticipant on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_addParticipant" target="_blank">https://circuitsandbox.net/sdk</a>
     </p>
-    <p>The output will be available as object within msg.payload</p>
+    <p>The output will be the conversation object within msg.payload</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('addTextItem', {
+    RED.nodes.registerType('addParticipant', {
         category: 'Circuit',
         defaults: {
             server: {value: '', type: 'circuit-server'},
@@ -40,7 +38,7 @@
         outputs: 1,
         icon: 'circuit.png',
         label: function() {
-            return this.name || this.convId || 'addTextItem';
+            return this.name || this.convId || 'addParticipant';
         },
         labelStyle: function() {
             return this.name ? 'node_label_italic' : '';

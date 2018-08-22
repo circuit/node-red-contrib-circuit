@@ -1,16 +1,21 @@
 module.exports = RED => {
-    function updateTextItem(n) {
+    function createDirectConversation(n) {
         RED.nodes.createNode(this, n);
         let node = this;
-        node.server = RED.nodes.getNode(n.server);       
+        node.server = RED.nodes.getNode(n.server);      
         node.server.subscribe(node.id, 'state', state => node.status(state));
-                
+        
         node.on('input', msg => {
+
             if (node.server.connected) {
-                node.server.client.updateTextItem(msg.payload)
-                    .then(item => {
-                        node.log('item updated');
-                        msg.payload = item;
+                node.server.client.createDirectConversation(msg.payload.user)
+                    .then(data => {
+                        if (data.alreadyExists) {
+                            node.log('conversation already exists.');
+                        } else {
+                            node.log('conversation created.');
+                        }
+                        msg.payload = data.conversation;
                         node.send(msg);
                     })
                     .catch(err => {
@@ -23,5 +28,5 @@ module.exports = RED => {
             }
         });
     }
-    RED.nodes.registerType('updateTextItem', updateTextItem);
+    RED.nodes.registerType('createDirectConversation', createDirectConversation);
 }

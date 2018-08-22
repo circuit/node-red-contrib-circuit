@@ -1,5 +1,5 @@
 module.exports = RED => {
-    function updateTextItem(n) {
+    function updateConversation(n) {
         RED.nodes.createNode(this, n);
         let node = this;
         node.server = RED.nodes.getNode(n.server);       
@@ -7,10 +7,10 @@ module.exports = RED => {
                 
         node.on('input', msg => {
             if (node.server.connected) {
-                node.server.client.updateTextItem(msg.payload)
-                    .then(item => {
-                        node.log('item updated');
-                        msg.payload = item;
+                node.server.client.updateConversation(msg.payload.convId, msg.payload.data)
+                    .then(conv => {
+                        node.log('Conversation updated.');
+                        msg.payload = conv;
                         node.send(msg);
                     })
                     .catch(err => {
@@ -23,5 +23,5 @@ module.exports = RED => {
             }
         });
     }
-    RED.nodes.registerType('updateTextItem', updateTextItem);
+    RED.nodes.registerType('updateConversation', updateConversation);
 }

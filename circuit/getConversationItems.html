@@ -1,6 +1,3 @@
-
-<!-- getConversationItems --> 
-
 <script type="text/x-red" data-template-name="getConversationItems">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
@@ -20,10 +17,15 @@
     <p>Retrieve multiple conversation items via the Circuit API</p>
     <p>This node requires msg.payload to be an object with the following properties
     <ul>
-        <li><code>direction</code> string of 'BEFORE' or 'AFTER' (default: BEFORE)</li>
-        <li><code>creationTime</code> timestamp in milliseconds for items created (default: current)</li>
-        <li><code>modificationDate</code> timestamp in milliseconds for items updated (default: current)</li>
-        <li><code>numberOfItems</code> number of items to return (default: 25)</li>
+        <li><code>convId</code> Conversation Id</li>
+        <li><code>options</code> [optional] Object of search conditions
+            <ul>
+                <li><code>direction</code> string of 'BEFORE' or 'AFTER' (default: BEFORE)</li>
+                <li><code>creationTime</code> timestamp in milliseconds for items created (default: current)</li>
+                <li><code>modificationDate</code> timestamp in milliseconds for items updated (default: current)</li>
+                <li><code>numberOfItems</code> number of items to return (default: 25)</li>                
+            </ul>
+        </li>
     </ul>
     You can check details about getConversationItems on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getConversationItems" target="_blank">https://circuitsandbox.net/sdk</a>
     </p>

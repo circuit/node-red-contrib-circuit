@@ -3,8 +3,7 @@ module.exports = RED => {
         RED.nodes.createNode(this, n);
         let node = this;
         node.search = n.search || '';
-        node.server = RED.nodes.getNode(n.server);
-        
+        node.server = RED.nodes.getNode(n.server);      
         node.server.subscribe(node.id, 'state', state => node.status(state));
 
         node.server.subscribe(node.id, 'basicSearchResults', evt => {

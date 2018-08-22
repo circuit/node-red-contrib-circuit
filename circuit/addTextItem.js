@@ -3,8 +3,7 @@ module.exports = RED => {
         RED.nodes.createNode(this, n);
         let node = this;
         node.convId = n.convId;
-        node.server = RED.nodes.getNode(n.server);
-        
+        node.server = RED.nodes.getNode(n.server); 
         node.server.subscribe(node.id, 'state', state => node.status(state));
         
         node.on('input', msg => {

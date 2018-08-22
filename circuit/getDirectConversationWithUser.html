@@ -1,5 +1,3 @@
-<!-- getDirectConversationWithUser --> 
-
 <script type="text/x-red" data-template-name="getDirectConversationWithUser">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
@@ -16,7 +14,7 @@
     <p>This node requires msg.payload to be an object with the following properties
     <ul>
         <li><code>user</code> string of the email address or userId of the user</li>
-        <li><code>create</code> create conversation if it does not exist? true or false (default: false)</li>
+        <li><code>create</code> [optional] create conversation if it does not exist? true or false (default: false)</li>
     </ul>
     You can check details about getDirectConversationWithUser on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getDirectConversationWithUser" target="_blank">https://circuitsandbox.net/sdk</a>
     </p>

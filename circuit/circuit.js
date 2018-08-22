@@ -4,7 +4,8 @@ module.exports = RED => {
     const Circuit = require('circuit-sdk');
 
     function CircuitServerNode(n) {
-        if (!n._users || !n._users.length) {
+
+        if (!n || !n._users) {
             // if no nodes use this server return
             return;
         }

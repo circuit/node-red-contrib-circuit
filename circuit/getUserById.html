@@ -1,4 +1,4 @@
-<script type="text/x-red" data-template-name="getConversationsByIds">
+<script type="text/x-red" data-template-name="getUserById">
     <div class="form-row">
         <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
         <input type="text" id="node-input-server">
@@ -9,17 +9,19 @@
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="getConversationsByIds">
-    <p>Gets an array of conversations.</p>
-    <p>This node requires msg.payload to be an object with the following properties
-        <ul>
-            <li><code>convIds</code> String[] String convId or String array of convIds to be returned.</li>
-        </ul>
+<script type="text/x-red" data-help-name="getUserById">
+    <p>Retrieve user by their email via the Circuit API</p>
+    <p>This node msg.payload.options to be an object with the following properties
+    <ul>
+        <li><code>userId</code> The User Id</li>
+    </ul>
+    You can check details about getUserById on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getUserById" target="_blank">https://circuitsandbox.net/sdk</a>
     </p>
+    <p>The output will be available as an object within msg.payload</p>
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('getConversationsByIds', {
+    RED.nodes.registerType('getUserById', {
         category: 'Circuit',
         defaults: {
             server: {value: '', type: 'circuit-server'},
@@ -30,7 +32,7 @@
         outputs: 1,
         icon: 'circuit.png',
         label: function() {
-            return this.name || this.conv || 'getConversationsByIds';
+            return this.name || 'getUserById';
         },
         labelStyle: function() {
             return this.name ? 'node_label_italic' : '';
