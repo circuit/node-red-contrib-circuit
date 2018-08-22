@@ -12,7 +12,7 @@ module.exports = RED => {
         RED.nodes.createNode(this, n);
         let node = this;
         node.domain = n.domain;
-        node.scope = n.allowScope && n.scope ? n.scope : 'ALL';
+        node.scope = n.allowScope && n.scope ||'ALL';
         node.clientid = n.clientid;
         node.clientsecret = n.clientsecret;
         node.loglevel = n.loglevel || 'Error';
@@ -36,7 +36,7 @@ module.exports = RED => {
         
         node.logon = () => {
             node.log('node.logon()');
-            if (node.client && node.connected === false) {
+            if (node.client && !node.connected) {
                 node.connected = true;
                 node.client.logon()
                     .then(user => {
