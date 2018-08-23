@@ -27,5 +27,3 @@ You can go [here](https://circuit.github.io/) and follow the instructions to obt
 3. Additional information on circuit client can be found at: [https://github.com/circuit/circuit-sdk](https://github.com/circuit/circuit-sdk).
 ## Testing
 Under development...<br/>
-## License
-The node is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
