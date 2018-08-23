@@ -4,12 +4,11 @@ module.exports = RED => {
     const Circuit = require('circuit-sdk');
 
     function CircuitServerNode(n) {
-
-        if (!n || !n._users) {
+        RED.nodes.createNode(this, n);
+        if (!n || !n._users || !n._users.length) {
             // if no nodes use this server return
             return;
         }
-        RED.nodes.createNode(this, n);
         let node = this;
         node.domain = n.domain;
         node.scope = n.allowScope && n.scope ||'ALL';
