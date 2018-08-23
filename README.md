@@ -25,5 +25,7 @@ You can go [here](https://circuit.github.io/) and follow the instructions to obt
 1. Select node with API functionality you desire.
 2. Enter the circuit-server information needed for bot, such as: `client_id`, `client_secret`, `domain`.
 3. Additional information on circuit client can be found at: [https://github.com/circuit/circuit-sdk](https://github.com/circuit/circuit-sdk).
+## Applications
+You can easily make applications using node-red and integrate them with our node-red-contrib-circuit API nodes. If you go [here](https://flows.nodered.org/flow/a9bcf02ec768ee9e8f3373808e0103e7) you can find an example flow that creates a bot to listen to a conversation and will send requests to look up weather, define words, and tell you jokes.
 ## Testing
 Under development...<br/>
