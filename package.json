@@ -1,7 +1,10 @@
 {
-    "author": {
-        "name": "Sven, mailsvb@gmail.com"
-    },
+    "author": "Unify Inc.",
+    "contributors": [
+        "Sven <mailsvb@gmail.com>",
+        "Roger Urscheler <roger.urscheler@unify.com>",
+        "Richard Fazzio <richard.fazzio@atos.net>"
+    ],
     "dependencies": {
         "circuit-sdk": "*"
     },
@@ -10,7 +13,7 @@
         "node-red": "^0.18.7",
         "node-red-node-test-helper": "^0.1.8"
     },
-    "description": "node-red circuit extension",
+    "description": "Official node-red circuit extension",
     "name": "node-red-contrib-circuit",
     "keywords": [
         "node-red",
@@ -48,5 +51,5 @@
     "scripts": {
         "test": "mocha ./test/* --recursive --timeout=60000 --exit"
     },
-    "version": "1.7.2"
+    "version": "2.0.0"
 }
