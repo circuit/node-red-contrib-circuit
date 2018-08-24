@@ -1,0 +1,43 @@
+<script type="text/x-red" data-template-name="getConversations">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="getConversations">
+    <p>Retrieve multiple conversation items via the Circuit API</p>
+    <p>This node optional msg.payload.options to be an object with the following optional properties
+    <ul>
+        <li><code>direction</code> Defines the direction of the search, i.e. get conversation BEFORE or AFTER a timestamp. If no direction is set but a timestamp the direction is set to BEFORE.</li>
+        <li><code>timestamp</code> Timestamp used in conjunction with the direction parameter. Default is no timestamp, causing most recent conversations to be returned.</li>
+        <li><code>numberOfConversations</code> Maximum number of conversations to retrieve. Default is 25.</li>
+        <li><code>numberOfParticipants</code> Maximum number of participants to return in the participants array. Default is 8.</li>
+    </ul>
+    You can check details about getConversations on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getConversations" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('getConversations', {
+        category: 'Circuit',
+        defaults: {
+            server: {value: '' , type: 'circuit-server'},
+            name: {value: '', required: false},
+        },
+        color: '#88C540',
+        inputs: 1,
+        outputs: 1,
+        icon: 'circuit.png',
+        label: function() {
+            return this.name || 'getConversations';
+        },
+        labelStyle: function() {
+            return this.name ? 'node_label_italic' : '';
+        }
+    });
+</script>

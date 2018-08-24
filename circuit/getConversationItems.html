@@ -1,0 +1,53 @@
+<script type="text/x-red" data-template-name="getConversationItems">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-convId"><i class="fa fa-plus-square"></i> Conv ID</label>
+        <input type="text" id="node-input-convId" placeholder="abcd1234-e567-f890-a123-abcdef123456">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="getConversationItems">
+    <p>Retrieve multiple conversation items via the Circuit API</p>
+    <p>This node requires msg.payload to be an object with the following properties
+    <ul>
+        <li><code>convId</code> Conversation Id</li>
+        <li><code>options</code> [optional] Object of search conditions
+            <ul>
+                <li><code>direction</code> string of 'BEFORE' or 'AFTER' (default: BEFORE)</li>
+                <li><code>creationTime</code> timestamp in milliseconds for items created (default: current)</li>
+                <li><code>modificationDate</code> timestamp in milliseconds for items updated (default: current)</li>
+                <li><code>numberOfItems</code> number of items to return (default: 25)</li>                
+            </ul>
+        </li>
+    </ul>
+    You can check details about getConversationItems on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getConversationItems" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('getConversationItems', {
+        category: 'Circuit',
+        defaults: {
+            server: {value: '' , type: 'circuit-server'},
+            convId: {value: ''},
+            name: {value: '', required: false},
+        },
+        color: '#88C540',
+        inputs: 1,
+        outputs: 1,
+        icon: 'circuit.png',
+        label: function() {
+            return this.name || this.convId || 'getConversationItems';
+        },
+        labelStyle: function() {
+            return this.name ? 'node_label_italic' : '';
+        }
+    });
+</script>

@@ -1,0 +1,47 @@
+<script type="text/x-red" data-template-name="updateConversation">
+    <div class="form-row">
+        <label for="node-input-server"><i class="fa fa-server"></i> Server</label>
+        <input type="text" id="node-input-server">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-bookmark"></i> Node name</label>
+        <input type="text" id="node-input-name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="updateConversation">
+    <p>Send a new text message via the Circuit API</p>
+    <p>This node takes msg.payload as object. It requires the following attributes
+    <ul>
+        <li><code>convId </code> The Conversation Id</li>
+        <li><code>data </code> Object containing the following attributes
+            <ul>
+                <li><code>topic</code> Topic of conversation/community</li>
+                <li><code>description</code> Description (only applicable to communities).</li>
+            </ul>
+        </li>
+    </ul>
+    You can check details about updateConversation on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_updateConversation" target="_blank">https://circuitsandbox.net/sdk</a>
+    </p>
+    <p>The output will be available as object within msg.payload</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('updateConversation', {
+        category: 'Circuit',
+        defaults: {
+            server: {value: '', type: 'circuit-server'},
+            name: {value: '', required: false},
+        },
+        color: '#88C540',
+        inputs: 1,
+        outputs: 1,
+        icon: 'circuit.png',
+        label: function() {
+            return this.name || 'updateConversation';
+        },
+        labelStyle: function() {
+            return this.name ? 'node_label_italic' : '';
+        }
+    });
+</script>
