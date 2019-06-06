@@ -3,7 +3,8 @@
         "name": "Sven, mailsvb@gmail.com"
     },
     "dependencies": {
-        "circuit-sdk": "*"
+        "circuit-sdk": "*",
+        "https-proxy-agent": "*"
     },
     "devDependencies": {
         "mocha": "^5.2.0",
@@ -48,5 +49,5 @@
     "scripts": {
         "test": "mocha ./test/* --recursive --timeout=60000 --exit"
     },
-    "version": "2.0.0"
+    "version": "2.0.1"
 }
