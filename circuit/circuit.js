@@ -2,6 +2,7 @@
 module.exports = RED => {
     const util = require('util');
     const Circuit = require('circuit-sdk');
+    const url = require('url');
 
     function CircuitServerNode(n) {
         RED.nodes.createNode(this, n);
@@ -22,6 +23,11 @@ module.exports = RED => {
         node.user = null;
         
         if (!node.client) {
+            if (process.env.http_proxy) {
+                var HttpsProxyAgent = require('https-proxy-agent');
+                Circuit.NodeSDK.proxyAgent = new HttpsProxyAgent(url.parse(process.env.http_proxy));
+                node.log(`Using proxy ${process.env.http_proxy}`);
+            }
             node.client = new Circuit.Client({
                 domain: node.domain,
                 client_id: node.clientid,
