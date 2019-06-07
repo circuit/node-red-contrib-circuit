@@ -1,5 +1,6 @@
 module.exports = RED => {
     function startUserSearch(n) {
+        const util = require('util');
         RED.nodes.createNode(this, n);
         let node = this;
         node.search = n.search || '';

@@ -1,5 +1,6 @@
 module.exports = RED => {
     function createDirectConversation(n) {
+        const util = require('util');
         RED.nodes.createNode(this, n);
         let node = this;
         node.server = RED.nodes.getNode(n.server);      

@@ -1,5 +1,6 @@
 module.exports = RED => {
     function getConversationItems(n) {
+        const util = require('util');
         RED.nodes.createNode(this, n);
         let node = this;
         node.convId = n.convId || '';
