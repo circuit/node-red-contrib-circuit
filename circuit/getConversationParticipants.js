@@ -12,7 +12,7 @@ module.exports = RED => {
                 node.convId = msg.payload.convId;
             }
             if (node.server.connected) {
-                node.server.client.getConversationParticipants(node.convId, msg.payload.options ? msg.payload.options : undefined)
+                node.server.client.getConversationParticipants(node.convId, msg.payload.options)
                     .then(data => {
                         node.log('message sent');
                         msg.payload = data.participants;

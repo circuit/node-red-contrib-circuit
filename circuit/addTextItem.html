@@ -17,11 +17,18 @@
     <p>Send a new text message via the Circuit API</p>
     <p>This node requires msg.payload to be an object with the following properties
     <ul>
-        <li><code>subject</code> The message subject</li>
-        <li><code>content</code> The message content</li>
-        <li><code>parentId</code> The ID of an existing message item to put this message as a comment</li>
-        <li><code>attachments</code> An Array of HTML5 File objects as attachment.</li>
+        <li><code>convId</code> [optional] String containing the conversation Id. The conversation Id can be passed in the node properties or in the payload, the conversation Id in the payload Object will overwrite the properties if both are set.</li>
     </ul>
+    <ul>
+        <li><code>content</code> String containing the message or Object containing the following</li>
+        <ul>
+            <li><code>subject</code> The message subject</li>
+            <li><code>content</code> The message content</li>
+            <li><code>parentId</code> The ID of an existing message item to put this message as a comment</li>
+            <li><code>attachments</code> An Array of HTML5 File objects as attachment.</li>
+        </ul>
+    </ul>
+
     You can check details about addTextItem on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_addTextItem" target="_blank">https://circuitsandbox.net/sdk</a>
     </p>
     <p>The output will be available as object within msg.payload</p>

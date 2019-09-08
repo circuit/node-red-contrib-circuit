@@ -18,6 +18,15 @@
     <p>This node requires msg.payload to be an object with the following properties
     <ul>
         <li><code>convId</code> The conversation Id to retrieve.</li>
+        <li>
+            <code>options</code> [optional] Object containing the following properties
+            <ul>
+                <li><code>searchCriterias</code>[optional] A list of search criterias that are used to filter the participants. Criterias are using an AND operation.</li>
+                <li><code>searchPointer</code>[optional] Used for paging of results. Each results page returns a searchPointer that is to be used to fetch the next page.</li>
+                <li><code>pageSize</code>[optional] Number of participants per page. Maximum is 100.</li>
+                <li><code>searchCriterias</code>[optional] Boolean, if set to true this will add the presence state of the user to the returned participant object. Default is false.</li>
+            </ul>
+        </li>
     </ul>
     You can check details about getConversationParticipants on <a href="https://circuitsandbox.net/sdk/classes/Client.html#method_getConversationParticipants" target="_blank">https://circuitsandbox.net/sdk</a>
     </p>
