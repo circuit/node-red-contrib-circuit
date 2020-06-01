@@ -70,8 +70,11 @@ module.exports = RED => {
             } else {
                 if (evt.state === Circuit.Enums.ConnectionState.Disconnected) {
                     node.connected = false;
-                    node.error('Disconnected. trying to logon: ' + node.clientid + ' domain: ' + node.client.domain);
-                    node.logon();
+                    node.error('Disconnected. wait for SDK to reconnect: ' + node.clientid + ' domain: ' + node.client.domain);
+                    // Remove call to logon as this causes an infinite logon loop if the logon fails
+                    // Re-connecting is handled in the SDK itself.
+                    // Keep connected state and broadcasting of the state.
+                    // node.logon();
                 }
             }
             node.broadcast('state', node.state);
