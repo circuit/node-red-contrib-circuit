@@ -1,18 +1,20 @@
 {
+    "name": "node-red-contrib-circuit",
+    "description": "node-red circuit extension",
     "author": {
         "name": "Sven, mailsvb@gmail.com"
     },
+    "contributors": [
+        "Roger Urscheler <roger.urscheler@atos.net>"
+    ],
     "dependencies": {
         "circuit-sdk": "*",
         "https-proxy-agent": "*"
     },
     "devDependencies": {
-        "mocha": "^5.2.0",
         "node-red": "^1.0.3",
         "node-red-node-test-helper": "^0.1.8"
     },
-    "description": "node-red circuit extension",
-    "name": "node-red-contrib-circuit",
     "keywords": [
         "node-red",
         "circuit",
@@ -46,8 +48,6 @@
             "updateTextItem": "circuit/updateTextItem.js"
         }
     },
-    "scripts": {
-        "test": "mocha ./test/* --recursive --timeout=60000 --exit"
-    },
-    "version": "2.0.4"
+    "scripts": {},
+    "version": "2.0.5"
 }
