@@ -7,6 +7,7 @@ module.exports = RED => {
         node.convEvent = n.convEvent;
         node.itemEvent = n.itemEvent;
         node.userEvent = n.userEvent;
+        node.formEvent = n.formEvent;
         node.server.subscribe(node.id, 'state', state => node.status(state));
 
         if (node.callEvent) {
@@ -25,6 +26,9 @@ module.exports = RED => {
         if (node.userEvent) {
             node.server.subscribe(node.id, 'userSettingsChanged', evt => node.send({ payload: evt.text }));
             node.server.subscribe(node.id, 'userUpdated', evt => node.send({ payload: evt.text }));
+        }
+        if (node.formEvent) {
+            node.server.subscribe(node.id, 'formSubmission', evt => node.send({payload: evt.text}));
         }
     }
     RED.nodes.registerType('Events', Events);
