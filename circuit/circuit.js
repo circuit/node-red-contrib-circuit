@@ -118,7 +118,7 @@ module.exports = RED => {
             for (var s in node.subscriptions) {
                 if (node.subscriptions[s].hasOwnProperty(type)) {
                     node.log('listener for >' + type + '< at node >' + s + '<');
-                    node.subscriptions[s][type]({fill: data === Circuit.Enums.ConnectionState.Connected ? 'green' : 'red', shape: 'dot', text: data});
+                    node.subscriptions[s][type]({fill: (data === Circuit.Enums.ConnectionState.Connected || data === Circuit.Enums.ConnectionState.Ready) ? 'green' : 'red', shape: 'dot', text: data});
                 }
             }
         };
