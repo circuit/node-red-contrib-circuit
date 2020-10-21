@@ -92,7 +92,7 @@ module.exports = RED => {
         ['renewAccessTokenFailed', 'renewSessionTokenFailed'].forEach(elem => node.client.addEventListener(elem, evt => node.error(util.inspect(evt, { showHidden: true, depth: null }))));
         // event listeners for all events that need to be "broadcasted" to all nodes.
         ['callStatus', 'callIncoming', 'callEnded', 'conversationUpdated', 'conversationCreated', 'itemUpdated', 'itemAdded',
-         'userSettingsChanged', 'userUpdated', 'userPresenceChanged', 'basicSearchResults']
+         'userSettingsChanged', 'userUpdated', 'userPresenceChanged', 'basicSearchResults', 'formSubmission']
         .forEach(elem => node.client.addEventListener(elem, evt => node.broadcast(elem, evt)));
         
         // subscribe and unsubscribe handling
